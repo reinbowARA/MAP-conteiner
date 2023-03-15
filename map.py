@@ -6,32 +6,22 @@ class BSTNode():
         self.val = val
         self.data = data
 
-    def _insert(self, val, data):
+    # добавление пары
+    def insert(self, val, data):
         if val == self.val:
             self.data = data
         elif val < self.val:
             if self.left is None:
                 self.left = BSTNode(val, data)
             else:
-                self.left._insert(val, data)
+                self.left.insert(val, data)
         else:
             if self.right is None:
                 self.right = BSTNode(val, data)
             else:
-                self.right._insert(val, data)
+                self.right.insert(val, data)
 
-    def get_min(self):
-        current = self
-        while current.left is not None:
-            current = current.left
-        return current.val
-
-    def get_max(self):
-        current = self
-        while current.right is not None:
-            current = current.right
-        return current.val
-
+    # удаляет пару по её ключу
     def delete(self, val):
         if self == None:
             return self
@@ -54,42 +44,27 @@ class BSTNode():
         self.right = self.right.delete(min_larger_node.val)
         return self
 
-    def exists(self, val):
+    # дает пару по её ключу
+    def GetDuo(self, val):
         if val == self.val:
             return self.val, self.data
 
         if val < self.val:
             if self.left == None:
-                return False
-            return self.left.exists(val)
+                return "Такого ключа не существует"
+            return self.left.GetDuo(val)
 
         if self.right == None:
-            return False
-        return self.right.exists(val)
+            return "Такого ключа не существует"
+        return self.right.GetDuo(val)
 
-    def preorder(self, vals):
-        if self.val is not None:
-            vals.append(self.val)
-        if self.left is not None:
-            self.left.preorder(vals)
-        if self.right is not None:
-            self.right.preorder(vals)
-        return vals,self.data
-
-    def inorder(self, vals):
-        if self.left is not None:
-            self.left.inorder(vals)
-        #if self.val is not None:
-        #    vals.append(self.val)
-        if self.right is not None:
-            self.right.inorder(vals)
-        return vals,self.data
-
-    def postorder(self, vals, data):
-        if self.left is not None:
-            self.left.postorder(vals)
-        if self.right is not None:
-            self.right.postorder(vals)
-        if self.val is not None:
-            vals.append(self.val)
-        return vals, data
+    def get_max(self):
+        current = self
+        while current.right is not None:
+            current = current.right
+        return current.val
+    
+    def AllTreeNull(self):
+        MaxElement = BSTNode.get_max(self)
+        for i in range (0, MaxElement+1):
+            BSTNode.delete(self,i)
